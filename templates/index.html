@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block titulo %}Agenda | Inicio{% endblock %}
+
+{% block contenido %}
+<!-- Estadísticas (las calcula app.js) -->
+<section class="stats">
+    <div class="stat"><b data-num id="nTotal">0</b><span>Total</span></div>
+    <div class="stat cat-familia"><b data-num id="nFamilia">0</b><span>Familia</span></div>
+    <div class="stat cat-escuela"><b data-num id="nEscuela">0</b><span>Escuela</span></div>
+    <div class="stat cat-trabajo"><b data-num id="nTrabajo">0</b><span>Trabajo</span></div>
+    <div class="stat cat-otro"><b data-num id="nOtro">0</b><span>Otro</span></div>
+</section>
+
+<button id="btnNuevo" class="grande" type="button">➕ Nuevo contacto</button>
+
+<!-- Formulario desplegable -->
+<section id="panelForm" class="tarjeta panel">
+    <h2>Agregar un contacto</h2>
+    <form action="{{ url_for('agregar') }}" method="POST" enctype="multipart/form-data">
+        <label>Nombre *</label>
+        <input type="text" name="nombre" required maxlength="80" placeholder="Ej. Ana López">
+
+        <label>Teléfono *</label>
+        <input type="text" name="telefono" required maxlength="25"
+               pattern="[0-9+\-\s()]{7,25}" title="Solo números, espacios, + - ( )"
+               placeholder="Ej. 55 1234 5678">
+
+        <label>Correo electrónico</label>
+        <input type="email" name="correo" maxlength="120" placeholder="ana@correo.com">
+
+        <label>Categoría *</label>
+        <select name="categoria" required>
+            <option value="">Selecciona una categoría</option>
+            <option>Familia</option>
+            <option>Escuela</option>
+            <option>Trabajo</option>
+            <option>Otro</option>
+        </select>
+
+        <label>Foto (opcional)</label>
+        <input type="file" id="foto" name="foto" accept="image/png,image/jpeg,image/gif,image/webp">
+        <img id="preview" class="preview" alt="Vista previa" hidden>
+
+        <button type="submit">Guardar contacto</button>
+    </form>
+</section>
+
+<!-- Búsqueda y filtros (funcionan sin recargar) -->
+<section class="barra">
+    <input id="buscar" type="search" placeholder="🔍 Buscar por nombre, teléfono o correo...">
+    <div class="chips">
+        <button type="button" class="chip activo" data-cat="Todas">Todas</button>
+        <button type="button" class="chip cat-familia" data-cat="Familia">👨‍👩‍👧 Familia</button>
+        <button type="button" class="chip cat-escuela" data-cat="Escuela">🎒 Escuela</button>
+        <button type="button" class="chip cat-trabajo" data-cat="Trabajo">💼 Trabajo</button>
+        <button type="button" class="chip cat-otro" data-cat="Otro">✨ Otro</button>
+    </div>
+</section>
+
+{% if contactos %}
+<section class="grid">
+    {% for contacto in contactos %}
+    <article class="contacto cat-{{ contacto.categoria|lower }}"
+             data-cat="{{ contacto.categoria }}"
+             data-texto="{{ (contacto.nombre ~ ' ' ~ contacto.telefono ~ ' ' ~ (contacto.correo or ''))|lower }}">
+        {% if contacto.foto %}
+        <div class="avatar con-foto" data-nombre="{{ contacto.nombre }}"><img src="{{ url_for('static', filename='uploads/' ~ contacto.foto) }}" alt="Foto de {{ contacto.nombre }}"></div>
+        {% else %}
+        <div class="avatar">{{ contacto.nombre[0]|upper }}</div>
+        {% endif %}
+        <h3>{{ contacto.nombre }}</h3>
+        <span class="insignia">{{ contacto.categoria }}</span>
+        <p>📱 <a href="tel:{{ contacto.telefono }}">{{ contacto.telefono }}</a></p>
+        <p>✉️ {% if contacto.correo %}<a href="mailto:{{ contacto.correo }}">{{ contacto.correo }}</a>{% else %}Sin correo{% endif %}</p>
+        <div class="acciones">
+            <a class="boton-enlace" href="{{ url_for('editar', id=contacto.id) }}">✏️ Editar</a>
+            <form action="{{ url_for('eliminar', id=contacto.id) }}" method="POST">
+                <button class="peligro btn-eliminar" type="button"
+                        data-nombre="{{ contacto.nombre }}">🗑️ Eliminar</button>
+            </form>
+        </div>
+    </article>
+    {% endfor %}
+</section>
+{% else %}
+<div class="vacio"><div class="rebote">📭</div><p>Aún no hay contactos. ¡Registra el primero!</p></div>
+{% endif %}
+
+<div id="sinResultados" class="vacio" hidden><div class="rebote">🔎</div><p>No encontré contactos con esa búsqueda.</p></div>
+{% endblock %}

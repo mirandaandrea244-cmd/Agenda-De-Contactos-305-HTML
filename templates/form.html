@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block titulo %}Editar contacto{% endblock %}
+
+{% block contenido %}
+<section class="tarjeta">
+    <h2>✏️ Editar contacto</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <label>Nombre *</label>
+        <input type="text" name="nombre" value="{{ contacto.nombre }}" required maxlength="80">
+
+        <label>Teléfono *</label>
+        <input type="text" name="telefono" value="{{ contacto.telefono }}" required maxlength="25"
+               pattern="[0-9+\-\s()]{7,25}" title="Solo números, espacios, + - ( )">
+
+        <label>Correo electrónico</label>
+        <input type="email" name="correo" value="{{ contacto.correo or '' }}" maxlength="120">
+
+        <label>Categoría *</label>
+        <select name="categoria" required>
+            {% for opcion in ["Familia", "Escuela", "Trabajo", "Otro"] %}
+            <option value="{{ opcion }}"
+                {% if contacto.categoria == opcion %}selected{% endif %}>{{ opcion }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Foto</label>
+        <img id="preview" class="preview" alt="Vista previa"
+             {% if contacto.foto %}src="{{ url_for('static', filename='uploads/' ~ contacto.foto) }}"{% else %}hidden{% endif %}>
+        <input type="file" id="foto" name="foto" accept="image/png,image/jpeg,image/gif,image/webp">
+        {% if contacto.foto %}
+        <label class="casilla"><input type="checkbox" name="quitar_foto" value="1"> Quitar foto actual</label>
+        {% endif %}
+
+        <div class="acciones">
+            <button type="submit">Guardar cambios</button>
+            <a class="boton-enlace sec" href="{{ url_for('inicio') }}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,97 @@
+:root{--fondo:#f1f5ff;--texto:#172554;--tarjeta:#fff;--borde:#cbd5e1;--azul:#2563eb;--morado:#7c3aed}
+body.oscuro{--fondo:#12122b;--texto:#e8e8ff;--tarjeta:#1d1d3f;--borde:#3a3a6b}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;background:var(--fondo);color:var(--texto);transition:background .3s,color .3s}
+
+/* Encabezado */
+.encabezado{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--azul),var(--morado));color:#fff;text-align:center;padding:34px 15px}
+.encabezado h1{margin:0 0 8px}
+.deco{position:absolute;font-size:2.2rem;opacity:.35;animation:flota 6s ease-in-out infinite}
+.d1{left:8%;top:20%}.d2{right:10%;top:30%;animation-delay:-2s}.d3{left:50%;bottom:8%;animation-delay:-4s}
+@keyframes flota{50%{transform:translateY(-14px) rotate(12deg)}}
+.tema{position:absolute;right:14px;top:12px;background:#fff3;font-size:1.2rem;padding:6px 10px;z-index:2}
+
+.contenedor{width:min(1050px,94%);margin:25px auto}
+
+/* Estadísticas */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--tarjeta);border-radius:14px;padding:14px;text-align:center;box-shadow:0 4px 14px #17255418;border-bottom:5px solid var(--c,var(--azul));transition:transform .2s}
+.stat:hover{transform:translateY(-4px)}
+.stat b{display:block;font-size:2rem;color:var(--c,var(--azul))}
+.stat span{font-size:.9rem;opacity:.8}
+
+/* Colores por categoría */
+.cat-familia{--c:#ec4899}.cat-escuela{--c:#3b82f6}.cat-trabajo{--c:#f59e0b}.cat-otro{--c:#10b981}
+
+/* Tarjetas y formulario */
+.tarjeta{background:var(--tarjeta);padding:22px;margin-bottom:22px;border-radius:14px;box-shadow:0 4px 14px #17255418}
+.panel{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;margin-bottom:0;opacity:0;transition:max-height .5s,opacity .4s,padding .4s,margin .4s}
+.panel.abierto{max-height:700px;padding:22px;margin-bottom:22px;opacity:1}
+form label{display:block;margin:12px 0 5px;font-weight:bold}
+input,select{width:100%;padding:11px;border:2px solid var(--borde);border-radius:10px;margin-bottom:8px;background:var(--tarjeta);color:var(--texto);font:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:0;border-color:var(--azul);box-shadow:0 0 0 4px #2563eb33}
+input:valid:not(:placeholder-shown){border-color:#22c55e}
+input:invalid:not(:placeholder-shown){border-color:#ef4444}
+
+button,.boton-enlace{background:var(--azul);color:#fff;border:0;padding:10px 16px;border-radius:10px;cursor:pointer;font:inherit;text-decoration:none;display:inline-block;transition:transform .15s,opacity .15s}
+button:hover,.boton-enlace:hover{opacity:.88;transform:translateY(-2px)}
+button:active{transform:scale(.96)}
+.grande{width:100%;font-size:1.1rem;padding:14px;margin-bottom:18px;background:linear-gradient(120deg,var(--azul),var(--morado))}
+.peligro{background:#e11d48}.secundario,.sec{background:#64748b}
+
+/* Búsqueda y chips */
+.barra{margin-bottom:18px}
+.barra input{margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--tarjeta);color:var(--texto);border:2px solid var(--c,var(--azul))}
+.chip.activo{background:var(--c,var(--azul));color:#fff;transform:scale(1.06)}
+
+/* Contactos */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.contacto{position:relative;background:var(--tarjeta);border-radius:16px;padding:20px 16px 16px;text-align:center;box-shadow:0 4px 14px #17255418;border-top:6px solid var(--c);animation:entra .5s both;transition:transform .25s,box-shadow .25s}
+.contacto:hover{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 14px 26px #17255426}
+.contacto[hidden]{display:none}
+@keyframes entra{from{opacity:0;transform:translateY(20px) scale(.92)}}
+.avatar{width:64px;height:64px;margin:0 auto 8px;border-radius:50%;background:var(--c);color:#fff;font-size:1.9rem;font-weight:800;display:grid;place-items:center;box-shadow:0 4px 0 #0002;transition:transform .4s}
+.contacto:hover .avatar{transform:rotate(360deg) scale(1.1)}
+.contacto h3{margin:.2rem 0}
+.insignia{display:inline-block;background:var(--c);color:#fff;border-radius:999px;padding:2px 12px;font-size:.8rem;font-weight:bold}
+.contacto p{margin:.5rem 0;word-break:break-word}
+.contacto a{color:var(--azul);text-decoration:none}.contacto a:hover{text-decoration:underline}
+.acciones{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px;flex-wrap:wrap}
+.acciones form{margin:0}.acciones .boton-enlace{color:#fff}.contacto .boton-enlace:hover{text-decoration:none}
+
+.vacio{text-align:center;padding:30px;font-size:1.2rem}.vacio[hidden]{display:none}
+.rebote{font-size:4rem;animation:rebota 1.4s infinite}
+@keyframes rebota{50%{transform:translateY(-14px)}}
+
+/* Notificaciones */
+.toasts{position:fixed;top:14px;right:14px;z-index:30;display:grid;gap:8px}
+.toast{background:#16a34a;color:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 8px 20px #0003;animation:desliza .4s}
+.toast.out{opacity:0;transform:translateX(120%);transition:all .5s}
+@keyframes desliza{from{transform:translateX(120%)}}
+
+/* Ventana modal */
+.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal.visible{opacity:1;pointer-events:auto}
+.modal-caja{background:var(--tarjeta);border-radius:18px;padding:26px;width:min(380px,92%);text-align:center;transform:scale(.8);transition:transform .25s}
+.modal.visible .modal-caja{transform:scale(1)}
+.modal-emoji{font-size:3.4rem}
+.modal-botones{display:flex;gap:10px;justify-content:center;margin-top:16px}
+
+/* Confeti */
+.conf{position:fixed;top:-30px;font-size:1.8rem;z-index:50;pointer-events:none;animation:cae 2.4s linear forwards}
+@keyframes cae{to{transform:translateY(112vh) rotate(540deg)}}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== Fotos de contacto ===== */
+.avatar{width:84px;height:84px;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar.con-foto{cursor:zoom-in;border:4px solid var(--c)}
+.preview{width:96px;height:96px;object-fit:cover;border-radius:50%;border:3px solid var(--azul);display:block;margin:8px 0}
+.preview[hidden]{display:none}
+input[type=file]{padding:8px;background:var(--fondo)}
+.casilla{display:flex!important;align-items:center;gap:8px;font-weight:normal!important}
+.casilla input{width:auto;margin:0}
+.visor-img{width:100%;max-height:60vh;object-fit:contain;border-radius:12px}

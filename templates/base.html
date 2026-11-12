@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Agenda de contactos{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <header class="encabezado">
+        <button id="tema" class="tema" title="Cambiar tema" type="button">🌙</button>
+        <span class="deco d1">📞</span><span class="deco d2">✉️</span><span class="deco d3">⭐</span>
+        <h1>📒 Mi agenda de contactos</h1>
+        <p>Organiza tus contactos en un solo lugar</p>
+    </header>
+
+    <!-- Avisos flash como notificaciones -->
+    <div class="toasts">
+        {% for mensaje in get_flashed_messages() %}
+            <div class="toast">{{ mensaje }}</div>
+        {% endfor %}
+    </div>
+
+    <main class="contenedor">
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <!-- Ventana de confirmación para eliminar -->
+    <div id="modal" class="modal" aria-hidden="true">
+        <div class="modal-caja">
+            <div class="modal-emoji">🗑️</div>
+            <h3>¿Eliminar contacto?</h3>
+            <p>Se borrará a <b id="modalNombre"></b>. Esta acción no se puede deshacer.</p>
+            <div class="modal-botones">
+                <button id="no" type="button" class="secundario">Cancelar</button>
+                <button id="si" type="button" class="peligro">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visor para ampliar la foto -->
+    <div id="visor" class="modal">
+        <div class="modal-caja">
+            <img id="visorImg" class="visor-img" alt="">
+            <h3 id="visorNombre"></h3>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
